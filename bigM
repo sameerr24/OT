@@ -10,27 +10,27 @@
 clc;
 clear all;
 
-M = 1000;   % Big M value
+M = 1000; 
 
-C = [-2 -1 0 -M -M 0];                             % Objective func coeffs
-A = [3 1 0 1 0 0  ; 4 3 -1 0 1 0 ; 1 2 0 0 0 1];   % constraint matrix
-b = [3 ; 6 ; 4];                                   % RHS values
+C = [-2 -1 0 -M -M 0];                             
+A = [3 1 0 1 0 0  ; 4 3 -1 0 1 0 ; 1 2 0 0 0 1];   
+b = [3 ; 6 ; 4];                                
 
-m = size(A, 1);                 % rows  i.e. number of constraints
-n = size(A, 2);                 % columns i.e. number of variables
+m = size(A, 1);          
+n = size(A, 2);               
 
 %% Phase 2
 
-bv_index = n - m + 1 : n ;      % indexes of basic variables
-                                % Artificial / slack variables start as basis
+bv_index = n - m + 1 : n ;     
+                          
 Y = [A b];
 for s = 1:50
-    CB = C(bv_index);               % cost coefficients of the current basic variables
-    Xb = Y(:, end);                 % inv(B) * b / current values of basic variables = the RHS column
-    Z = CB * Xb;                    % Current objective value
+    CB = C(bv_index);             
+    Xb = Y(:, end);                 % inv(B) * b / current values of basic variables
+    Z = CB * Xb;                   
     ZjCj = CB * Y(:, 1:n) - C;      % transpose(Cb) * Alpha^j - Cj 
 
-    Table = [ZjCj Z; Y]             % Table after 1st iteration
+    Table = [ZjCj Z; Y]            
 
     %% Phase 3 - Checking for optimality
     if all(ZjCj >= 0)
